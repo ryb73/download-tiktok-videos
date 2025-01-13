@@ -110,15 +110,12 @@ async function download(
   }
 }
 
-function getOutputFilename() {
-  let outputPath = path.join(path.dirname(jsonPath), `downloaded-videos.json`);
+function getSafeFilename(name: string, extension: string) {
+  let outputPath = path.join(path.dirname(jsonPath), `${name}.${extension}`);
   // if the path already exists, append a number to the end
   let i = 1;
   while (i < 100 && existsSync(outputPath)) {
-    outputPath = path.join(
-      path.dirname(jsonPath),
-      `downloaded-videos-${i}.json`
-    );
+    outputPath = path.join(path.dirname(jsonPath), `${name}-${i}.${extension}`);
     i++;
   }
 
@@ -131,7 +128,7 @@ function cleanup() {
   if (isCleanupDone) return;
   isCleanupDone = true;
 
-  const outputPath = getOutputFilename();
+  const outputPath = getSafeFilename(`downloaded-videos`, `json`);
   console.log(`Writing results to ${outputPath}`);
   writeFileSync(outputPath, JSON.stringify(report, null, 2));
 }
