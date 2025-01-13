@@ -52,8 +52,6 @@ type Result = {
 const results: Result[] = [];
 
 function download(videoUrl: string, outputPath: string): Result {
-  console.log(`\nDownloading ${videoUrl} to ${outputPath}`);
-
   try {
     // Create directory if it doesn't exist
     mkdirSync(outputPath, { recursive: true });
@@ -116,20 +114,28 @@ function cleanup() {
   writeFileSync(outputPath, JSON.stringify(results, null, 2));
 }
 
-function traverse(input: Input, basePath: string, currentPath?: string) {
-  const paths = Object.entries(input);
-  if (currentPath == null) {
-    paths.sort(([a], [b]) => rootKeyToPriority(a) - rootKeyToPriority(b));
-  }
+function traverse(
+  input: Input,
+  numVideos: number,
+  startIndex: number,
+  currentPath: string
+) {
+  let currentIndex = startIndex;
 
-  const fullPath = path.join(basePath, currentPath ?? `.`);
+  const paths = Object.entries(input);
 
   for (const [key, value] of paths) {
-    const keyPath = path.join(fullPath, key);
+    const keyPath = path.join(currentPath, key);
 
     if (Array.isArray(value)) {
       for (const link of value) {
+        console.log(
+          `\nDownloading ${link} to ${keyPath} [${currentIndex + 1}/${numVideos}]`
+        );
+        ++currentIndex;
+
         const result = download(link, keyPath);
+
         results.push(result);
         if (result.catastrophic === true) {
           cleanup();
@@ -137,9 +143,11 @@ function traverse(input: Input, basePath: string, currentPath?: string) {
         }
       }
     } else {
-      traverse(value, keyPath);
+      currentIndex = traverse(value, numVideos, currentIndex, keyPath);
     }
   }
+
+  return currentIndex;
 }
 
 process.on(`SIGINT`, () => {
@@ -148,8 +156,26 @@ process.on(`SIGINT`, () => {
   process.exit();
 });
 
+function countVideos(input: Input) {
+  let count = 0;
+
+  for (const value of Object.values(input)) {
+    count += Array.isArray(value) ? value.length : countVideos(value);
+  }
+
+  return count;
+}
+
 try {
-  traverse(parsedJson, path.dirname(jsonPath));
+  const numVideos = countVideos(parsedJson);
+
+  const parsedJsonEntries = Object.entries(parsedJson);
+  parsedJsonEntries.sort(
+    ([a], [b]) => rootKeyToPriority(a) - rootKeyToPriority(b)
+  );
+  const sortedParsedJson = Object.fromEntries(parsedJsonEntries);
+
+  traverse(sortedParsedJson, numVideos, 0, path.dirname(jsonPath));
 } finally {
   cleanup();
 }
