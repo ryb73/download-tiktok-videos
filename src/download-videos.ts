@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { spawn } from "child_process";
-import { mkdirSync, readFileSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { fd } from "@ryb73/super-duper-parakeet/lib/src/io/forceDecode.js";
 import { array, record, recursion, string, union } from "io-ts";
@@ -114,18 +114,12 @@ function getOutputFilename() {
   let outputPath = path.join(path.dirname(jsonPath), `downloaded-videos.json`);
   // if the path already exists, append a number to the end
   let i = 1;
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
-  while (true) {
-    try {
-      readFileSync(outputPath);
-      outputPath = path.join(
-        path.dirname(jsonPath),
-        `downloaded-videos-${i}.json`
-      );
-      i++;
-    } catch {
-      break;
-    }
+  while (i < 100 && existsSync(outputPath)) {
+    outputPath = path.join(
+      path.dirname(jsonPath),
+      `downloaded-videos-${i}.json`
+    );
+    i++;
   }
 
   return outputPath;
