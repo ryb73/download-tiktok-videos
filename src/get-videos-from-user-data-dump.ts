@@ -7,7 +7,9 @@ import type { TypeOf } from "io-ts";
 
 // Check for CLI argument
 if (process.argv.length !== 3) {
-  console.error(`Usage: node index.js <path-to-json-file>`);
+  console.error(
+    `Usage: node get-videos-from-user-data-dump.js <path-to-json-file>`
+  );
   process.exit(1);
 }
 
