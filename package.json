@@ -1,7 +1,7 @@
 {
   "name": "tiktok-archiver",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "lint": "eslint . --ext ts --ext tsx --ext js --ext jsx",

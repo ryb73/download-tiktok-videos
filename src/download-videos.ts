@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { execSync } from "child_process";
+import { spawn } from "child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { fd } from "@ryb73/super-duper-parakeet/lib/src/io/forceDecode.js";
@@ -51,21 +51,43 @@ type Result = {
 
 const results: Result[] = [];
 
-function download(videoUrl: string, outputPath: string): Result {
+function runYtDlp(videoUrl: string, outputPath: string) {
+  return new Promise<{ success: boolean; sigint: boolean }>((resolve) => {
+    const childProcess = spawn(
+      `yt-dlp`,
+      [videoUrl, `-P`, outputPath, `-o`, `%(title).200s.%(ext)s`],
+      { stdio: `inherit` }
+    );
+
+    childProcess.on(`exit`, (code, signal) => {
+      if (signal === `SIGINT`) {
+        resolve({ success: false, sigint: true });
+      } else if (code !== 0) {
+        resolve({ success: false, sigint: false });
+      } else {
+        resolve({ success: true, sigint: false });
+      }
+    });
+
+    // You can also listen for the specific SIGINT signal
+    childProcess.on(`SIGINT`, () => {
+      console.log(`Received SIGINT signal`);
+    });
+  });
+}
+
+async function download(videoUrl: string, outputPath: string): Promise<Result> {
   try {
     // Create directory if it doesn't exist
     mkdirSync(outputPath, { recursive: true });
 
-    // Execute yt-dlp
-    execSync(
-      `yt-dlp "${videoUrl}" -P "${outputPath}" -o "%(title).200s.%(ext)s"`,
-      { stdio: `inherit` }
-    );
+    const { success, sigint } = await runYtDlp(videoUrl, outputPath);
 
     return {
       path: outputPath,
       videoUrl,
-      success: true,
+      success,
+      catastrophic: sigint,
     };
   } catch (error) {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -114,7 +136,7 @@ function cleanup() {
   writeFileSync(outputPath, JSON.stringify(results, null, 2));
 }
 
-function traverse(
+async function traverse(
   input: Input,
   numVideos: number,
   startIndex: number,
@@ -134,7 +156,8 @@ function traverse(
         );
         ++currentIndex;
 
-        const result = download(link, keyPath);
+        // eslint-disable-next-line no-await-in-loop
+        const result = await download(link, keyPath);
 
         results.push(result);
         if (result.catastrophic === true) {
@@ -143,7 +166,8 @@ function traverse(
         }
       }
     } else {
-      currentIndex = traverse(value, numVideos, currentIndex, keyPath);
+      // eslint-disable-next-line no-await-in-loop
+      currentIndex = await traverse(value, numVideos, currentIndex, keyPath);
     }
   }
 
@@ -175,7 +199,7 @@ try {
   );
   const sortedParsedJson = Object.fromEntries(parsedJsonEntries);
 
-  traverse(sortedParsedJson, numVideos, 0, path.dirname(jsonPath));
+  await traverse(sortedParsedJson, numVideos, 0, path.dirname(jsonPath));
 } finally {
   cleanup();
 }
