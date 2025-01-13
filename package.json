@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "lint": "eslint . --ext ts --ext tsx --ext js --ext jsx",
     "watch": "tsc -w"
   },
   "author": "Ryan Biwer",
   "license": "MIT",
   "devDependencies": {
+    "@ryb73/eslint-config": "^14.0.0",
     "typescript": "5.7.3"
   }
 }
