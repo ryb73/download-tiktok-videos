@@ -49,7 +49,7 @@ type Result = {
   catastrophic?: boolean;
 };
 
-const results: Result[] = [];
+const report: Result[] = [];
 
 function runYtDlp(videoUrl: string, outputPath: string) {
   return new Promise<{ success: boolean; sigint: boolean }>((resolve) => {
@@ -76,15 +76,21 @@ function runYtDlp(videoUrl: string, outputPath: string) {
   });
 }
 
-async function download(videoUrl: string, outputPath: string): Promise<Result> {
+async function download(
+  videoUrl: string,
+  basePath: string,
+  relativePath: string
+): Promise<Result> {
   try {
+    const outputPath = path.join(basePath, relativePath);
+
     // Create directory if it doesn't exist
     mkdirSync(outputPath, { recursive: true });
 
     const { success, sigint } = await runYtDlp(videoUrl, outputPath);
 
     return {
-      path: outputPath,
+      path: relativePath,
       videoUrl,
       success,
       catastrophic: sigint,
@@ -97,7 +103,7 @@ async function download(videoUrl: string, outputPath: string): Promise<Result> {
         String(error).includes(`KeyboardInterrupt`) ||
         String(error).includes(`Interrupted by user`),
       error: String(error),
-      path: outputPath,
+      path: relativePath,
       success: false,
       videoUrl,
     };
@@ -133,14 +139,15 @@ function cleanup() {
 
   const outputPath = getOutputFilename();
   console.log(`Writing results to ${outputPath}`);
-  writeFileSync(outputPath, JSON.stringify(results, null, 2));
+  writeFileSync(outputPath, JSON.stringify(report, null, 2));
 }
 
 async function traverse(
   input: Input,
   numVideos: number,
   startIndex: number,
-  currentPath: string
+  basePath: string,
+  currentPath = `.`
 ) {
   let currentIndex = startIndex;
 
@@ -157,17 +164,23 @@ async function traverse(
         ++currentIndex;
 
         // eslint-disable-next-line no-await-in-loop
-        const result = await download(link, keyPath);
+        const reportItem = await download(link, basePath, keyPath);
 
-        results.push(result);
-        if (result.catastrophic === true) {
+        report.push(reportItem);
+        if (reportItem.catastrophic === true) {
           cleanup();
           process.exit(1);
         }
       }
     } else {
       // eslint-disable-next-line no-await-in-loop
-      currentIndex = await traverse(value, numVideos, currentIndex, keyPath);
+      currentIndex = await traverse(
+        value,
+        numVideos,
+        currentIndex,
+        basePath,
+        keyPath
+      );
     }
   }
 
