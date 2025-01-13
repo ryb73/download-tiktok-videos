@@ -7,6 +7,16 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@ryb73/super-duper-parakeet':
+        specifier: ^12.1.1
+        version: 12.1.1(fp-ts@2.16.9)(io-ts@2.2.22(fp-ts@2.16.9))(lodash@4.17.21)(nanoid@3.3.8)
+      fp-ts:
+        specifier: ^2.16.9
+        version: 2.16.9
+      io-ts:
+        specifier: ^2.2.22
+        version: 2.2.22(fp-ts@2.16.9)
     devDependencies:
       '@ryb73/eslint-config':
         specifier: ^14.0.0
@@ -1048,6 +1058,68 @@ packages:
       eslint: ^8.50.0
       eslint-config-hardcore: ^45.1.1
       typescript: '>=4.9.6'
+
+  '@ryb73/super-duper-parakeet@12.1.1':
+    resolution: {integrity: sha512-UFMM0c8m3jbKMBXOEKqxglcLogxG5xi39gw87JhmQfs3crTLEO6Uf4jwZblDDu/6tWdeFoSq414edF+Pl3QclQ==}
+    peerDependencies:
+      '@emotion/react': '*'
+      '@emotion/styled': ^11.3.0
+      '@radix-ui/react-collapsible': ^0.1.6 || ^1.0.2
+      axios: ^0.26.1
+      dayjs: '*'
+      fp-ts: ^2.10.4
+      io-ts: ^2.2.16
+      io-ts-reporters: ^2.0.0
+      io-ts-types: ^0.5.16
+      jest: '>=26 <=29'
+      lodash: ^4.17.21
+      monocle-ts: ^2.3.9
+      nanoid: ^3.0.0 || ^4.0.0
+      newtype-ts: ^0.3.4
+      next: '>=9 <=13'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-query: ^3.13.12
+      typestyle: ^2.4.0
+    peerDependenciesMeta:
+      '@emotion/react':
+        optional: true
+      '@emotion/styled':
+        optional: true
+      '@radix-ui/react-collapsible':
+        optional: true
+      axios:
+        optional: true
+      dayjs:
+        optional: true
+      fp-ts:
+        optional: true
+      io-ts:
+        optional: true
+      io-ts-reporters:
+        optional: true
+      io-ts-types:
+        optional: true
+      jest:
+        optional: true
+      lodash:
+        optional: true
+      monocle-ts:
+        optional: true
+      nanoid:
+        optional: true
+      newtype-ts:
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+      react-query:
+        optional: true
+      typestyle:
+        optional: true
 
   '@shopify/eslint-plugin@44.0.0':
     resolution: {integrity: sha512-p0BozXrvE7Z8EmnRJKg9QhS+8xbFPRY5u0mUFE2x8iOsSA1Yv1pGh+spR8QTz+zQCxv8DtJ0Hval9XSPFGxw4Q==}
@@ -2354,6 +2426,9 @@ packages:
     resolution: {integrity: sha512-iQz8w2qr4f+doWBV6LsfScHbu1gXhccByjbmA1wjBTaKRhweH2baJL96UGR4C7Fjpr8zSkK7EXiLmbzZWTyQIA==}
     engines: {node: '>=8'}
 
+  fp-ts@2.16.9:
+    resolution: {integrity: sha512-+I2+FnVB+tVaxcYyQkHUq7ZdKScaBlX53A41mxQtpIccsfyv8PzdzP7fzp2AY832T4aoK6UZ5WRX/ebGd8uZuQ==}
+
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
@@ -2507,6 +2582,9 @@ packages:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
 
+  immer@10.1.1:
+    resolution: {integrity: sha512-s2MPrmjovJcoMaHtx6K11Ra7oD05NT97w1IC5zpMkT6Atjr7H8LjaDd81iIxUYpMKSRRNMJE703M1Fhr/TctHw==}
+
   import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -2540,6 +2618,14 @@ packages:
   internal-slot@1.1.0:
     resolution: {integrity: sha512-4gd7VpWNQNB4UKKCFFVcp1AVv+FMOgs9NKzjHKusc8jTMhd5eL1NqQqOpE0KzMds804/yHlglp3uxgluOqAPLw==}
     engines: {node: '>= 0.4'}
+
+  invalid-type@1.0.1:
+    resolution: {integrity: sha512-cQH3qUpBrs7iVWCxD3CIcGd6Tqhi+yx+UFFvEfa89WIh7Xo3fzTZiBCiMjTo2hDqvHgjOBLa0/6p9irIPmzOdg==}
+
+  io-ts@2.2.22:
+    resolution: {integrity: sha512-FHCCztTkHoV9mdBsHpocLpdTAfh956ZQcIkWQxxS0U5HT53vtrcuYdQneEJKH6xILaLNzXVl2Cvwtoy8XNN0AA==}
+    peerDependencies:
+      fp-ts: ^2.5.0
 
   is-array-buffer@3.0.5:
     resolution: {integrity: sha512-DDfANUiiG2wC1qawP66qlTugJeL5HyzMpfr8lLK+jMQirGzNod0B12cFB/9q838Ru27sBwfw78/rdoU7RERz6A==}
@@ -4974,6 +5060,16 @@ snapshots:
       eslint-config-hardcore: 45.8.0(@babel/core@7.26.0)(@babel/eslint-parser@7.26.5(@babel/core@7.26.0)(eslint@8.57.1))(eslint@8.57.1)(prettier@3.4.2)(typescript@5.7.3)(vue-eslint-parser@9.4.3(eslint@8.57.1))
       typescript: 5.7.3
 
+  '@ryb73/super-duper-parakeet@12.1.1(fp-ts@2.16.9)(io-ts@2.2.22(fp-ts@2.16.9))(lodash@4.17.21)(nanoid@3.3.8)':
+    dependencies:
+      immer: 10.1.1
+      invalid-type: 1.0.1
+    optionalDependencies:
+      fp-ts: 2.16.9
+      io-ts: 2.2.22(fp-ts@2.16.9)
+      lodash: 4.17.21
+      nanoid: 3.3.8
+
   '@shopify/eslint-plugin@44.0.0(@babel/core@7.26.0)(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)(prettier@3.4.2)(typescript@5.7.3)':
     dependencies:
       '@babel/eslint-parser': 7.26.5(@babel/core@7.26.0)(eslint@8.57.1)
@@ -6741,6 +6837,8 @@ snapshots:
     dependencies:
       currify: 4.0.0
 
+  fp-ts@2.16.9: {}
+
   fs.realpath@1.0.0: {}
 
   fullstore@3.0.0: {}
@@ -6892,6 +6990,8 @@ snapshots:
 
   ignore@5.3.2: {}
 
+  immer@10.1.1: {}
+
   import-fresh@3.3.0:
     dependencies:
       parent-module: 1.0.1
@@ -6919,6 +7019,12 @@ snapshots:
       es-errors: 1.3.0
       hasown: 2.0.2
       side-channel: 1.1.0
+
+  invalid-type@1.0.1: {}
+
+  io-ts@2.2.22(fp-ts@2.16.9):
+    dependencies:
+      fp-ts: 2.16.9
 
   is-array-buffer@3.0.5:
     dependencies:

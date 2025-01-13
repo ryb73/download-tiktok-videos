@@ -12,5 +12,10 @@
   "devDependencies": {
     "@ryb73/eslint-config": "^14.0.0",
     "typescript": "5.7.3"
+  },
+  "dependencies": {
+    "@ryb73/super-duper-parakeet": "^12.1.1",
+    "fp-ts": "^2.16.9",
+    "io-ts": "^2.2.22"
   }
 }
