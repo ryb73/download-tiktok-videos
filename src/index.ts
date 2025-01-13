@@ -1,8 +1,18 @@
+/* eslint-disable no-console */
+import { readFileSync } from "fs";
 import { fd } from "@ryb73/super-duper-parakeet/lib/src/io/forceDecode.js";
 import { defined } from "@ryb73/super-duper-parakeet/lib/src/type-checks.js";
 import { array, record, strict, string } from "io-ts";
 import type { TypeOf } from "io-ts";
-import blah from "../user-data/ryan.json";
+
+// Check for CLI argument
+if (process.argv.length !== 3) {
+  console.error(`Usage: node index.js <path-to-json-file>`);
+  process.exit(1);
+}
+
+const jsonPath = process.argv[2]!;
+const jsonData = JSON.parse(readFileSync(jsonPath, `utf-8`));
 
 const InputSchema = strict({
   Activity: strict({
@@ -86,7 +96,7 @@ type InputSchema = TypeOf<typeof InputSchema>;
 //   )
 // );
 
-const parsedJson = fd(InputSchema, blah);
+const parsedJson = fd(InputSchema, jsonData);
 
 type Output = {
   favorites: string[];
