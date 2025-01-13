@@ -55,7 +55,7 @@ function runYtDlp(videoUrl: string, outputPath: string) {
   return new Promise<{ success: boolean; sigint: boolean }>((resolve) => {
     const childProcess = spawn(
       `yt-dlp`,
-      [videoUrl, `-P`, outputPath, `-o`, `%(title).200s.%(ext)s`],
+      [videoUrl, `-P`, outputPath, `-o`, `%(title).200s.%(ext)s`], // truncate to 200 characters
       { stdio: `inherit` }
     );
 
