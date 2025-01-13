@@ -20,10 +20,22 @@ importers:
       io-ts-reporters:
         specifier: ^2.0.1
         version: 2.0.1(fp-ts@2.16.9)(io-ts@2.2.22(fp-ts@2.16.9))
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
     devDependencies:
       '@ryb73/eslint-config':
         specifier: ^14.0.0
         version: 14.0.0(@emotion/eslint-plugin@11.12.0(eslint@8.57.1)(typescript@5.7.3))(eslint-config-hardcore@45.8.0(@babel/core@7.26.0)(@babel/eslint-parser@7.26.5(@babel/core@7.26.0)(eslint@8.57.1))(eslint@8.57.1)(prettier@3.4.2)(typescript@5.7.3)(vue-eslint-parser@9.4.3(eslint@8.57.1)))(eslint@8.57.1)(typescript@5.7.3)
+      '@types/lodash':
+        specifier: ^4.17.14
+        version: 4.17.14
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
       '@types/node':
         specifier: ^22.10.5
         version: 22.10.5
@@ -1161,6 +1173,12 @@ packages:
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+
+  '@types/lodash-es@4.17.12':
+    resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
+
+  '@types/lodash@4.17.14':
+    resolution: {integrity: sha512-jsxagdikDiDBeIRaPYtArcT8my4tN1og7MtMRquFT3XNA6axxyHDRUemqDz/taRDdOUn0GnGHRCuff4q48sW9A==}
 
   '@types/mdast@3.0.15':
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
@@ -2930,6 +2948,9 @@ packages:
   locate-path@7.2.0:
     resolution: {integrity: sha512-gvVijfZvn7R+2qyPX8mAuKcFGDf6Nc61GdvGafQsHL0sBIxfKzA+usWn4GFC/bk+QdwPUD4kWFJLhElipq+0VA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
+  lodash-es@4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
 
   lodash.memoize@4.1.2:
     resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
@@ -5165,6 +5186,12 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
+  '@types/lodash-es@4.17.12':
+    dependencies:
+      '@types/lodash': 4.17.14
+
+  '@types/lodash@4.17.14': {}
+
   '@types/mdast@3.0.15':
     dependencies:
       '@types/unist': 2.0.11
@@ -7329,6 +7356,8 @@ snapshots:
   locate-path@7.2.0:
     dependencies:
       p-locate: 6.0.0
+
+  lodash-es@4.17.21: {}
 
   lodash.memoize@4.1.2: {}
 

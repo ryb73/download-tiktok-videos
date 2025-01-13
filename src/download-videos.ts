@@ -5,6 +5,8 @@ import path from "path";
 import { fd } from "@ryb73/super-duper-parakeet/lib/src/io/forceDecode.js";
 import { array, record, recursion, string, union } from "io-ts";
 import type { Type } from "io-ts";
+import lodash from "lodash";
+import assert from "assert";
 
 // Check for CLI argument
 if (process.argv.length !== 3) {
@@ -50,6 +52,7 @@ type Result = {
 };
 
 const report: Result[] = [];
+const retriableFailures: Input = {};
 
 function runYtDlp(videoUrl: string, outputPath: string) {
   return new Promise<{ success: boolean; sigint: boolean }>((resolve) => {
@@ -128,9 +131,15 @@ function cleanup() {
   if (isCleanupDone) return;
   isCleanupDone = true;
 
-  const outputPath = getSafeFilename(`downloaded-videos`, `json`);
-  console.log(`Writing results to ${outputPath}`);
-  writeFileSync(outputPath, JSON.stringify(report, null, 2));
+  const reportPath = getSafeFilename(`download-report`, `json`);
+
+  const jsonPathBase = path.basename(jsonPath, path.extname(jsonPath));
+  const failuresPath = getSafeFilename(`${jsonPathBase}-failures`, `json`);
+
+  console.log(`Saving run results...`);
+  writeFileSync(reportPath, JSON.stringify(report, null, 2));
+  writeFileSync(failuresPath, JSON.stringify(retriableFailures, null, 2));
+  console.log(`done.`);
 }
 
 async function traverse(
@@ -158,6 +167,23 @@ async function traverse(
         const reportItem = await download(link, basePath, keyPath);
 
         report.push(reportItem);
+
+        if (!reportItem.success) {
+          const pathWithinObject = keyPath.replaceAll(`/`, `.`);
+
+          const existingVideos = lodash.get(
+            retriableFailures,
+            pathWithinObject
+          );
+          assert(existingVideos === undefined || Array.isArray(existingVideos));
+
+          // use lodash to add the link URL to the array specified by path within retriableFailures
+          lodash.set(retriableFailures, pathWithinObject, [
+            ...(existingVideos ?? []),
+            link,
+          ]);
+        }
+
         if (reportItem.catastrophic === true) {
           cleanup();
           process.exit(1);
